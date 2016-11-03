@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.danong.manage.mapper.IllegalMapper">
+
+	<select id="queryAllLsprefix" resultType="java.lang.String">
+		SELECT DISTINCT lsprefix from tb_illegal
+	</select>
+
+	<resultMap type="com.danong.manage.pojo.Illegal" id="illegalMap" autoMapping="true">
+
+	</resultMap>
+
+
+	<resultMap type="com.danong.manage.pojo.vo.IllegalVo" id="illegalVoMap" autoMapping="true">
+
+	</resultMap>
+
+
+	<!-- 查询违章所有省份 -->
+	<select id="queryAllIllegalProvince" resultType="IllegalVo" resultMap="illegalVoMap">
+		SELECT
+		t.id,
+		t.province,
+		t.lsprefix,
+		t.lsnum
+		FROM
+		tb_illegal t
+		GROUP BY t.lsprefix
+		ORDER BY t.id
+	</select>
+
+
+	<!-- 查询管局热门城市 -->
+	<select id="queryIllegalHotCity" resultType="Illegal" resultMap="illegalMap">
+		SELECT
+		*
+		FROM
+		tb_illegal t
+		WHERE t.city IN (
+		'北京',
+		'上海',
+		'广州',
+		'深圳',
+		'天津',
+		'重庆',
+		'成都',
+		'杭州'
+		)
+		ORDER BY (
+		CASE
+		t.city
+		WHEN '北京'
+		THEN 1
+		WHEN '上海'
+		THEN 2
+		WHEN '广州'
+		THEN 3
+		WHEN '深圳'
+		THEN 4
+		WHEN '天津'
+		THEN 5
+		WHEN '重庆'
+		THEN 6
+		WHEN '成都'
+		THEN 7
+		WHEN '杭州'
+		THEN 8
+		END
+		)
+	</select>
+
+
+</mapper>
